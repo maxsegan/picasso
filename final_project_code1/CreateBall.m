@@ -4,7 +4,9 @@ function CreateBall(r,x0,y0,z0,theta)
     [x,y,z]=sphere(N); %%The resolution of sphere
     surf(r*x+x0,r*y+y0,r*z+z0);
     k = (r+0.4)/r;
-    X=k*r*x+x0;Y=k*r*y+y0;Z=k*r*z+z0;
+    y0
+    %X=k*r*x+x0;Y=k*r*y+y0;Z=k*r*z+z0;
+    X=k*r*x+z0;Y=k*r*y+x0;Z=k*r*z+y0;
     hold on
     %shading interp
    

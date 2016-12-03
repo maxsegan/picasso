@@ -15,14 +15,14 @@ alpha = DH(:,2);
 d = DH(:,3);
 
 %Parameters of sphere
-r = 0.6;
-Ox = 1.5;
+% r = 0.6;
+% Ox = 1.5;
+% Oy = 1.5;
+% Oz = 1.5;
+r = 0.5;
+Ox = 0;
 Oy = 1.5;
 Oz = 1.5;
-% r = 0.3;
-% Ox = 0.5;
-% Oy = 0.5;
-% Oz = 0.5;
 %view(42,12);
 for theta = 0.1:0.2:pi
     for phi = 0.1:0.5:2*pi

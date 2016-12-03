@@ -36,7 +36,7 @@ function drawRobot(DH_table,theta,Ox,Oy,Oz,r)
     grid on
     view(42,12);
     %axis([-0.2 1 -0.2 1 0 1]);
-    axis([-0.5 3 -0.5 3 0 3.5]);
+    axis([-2 2 -1 3 0 4]);
     %axis equal
     drawnow
 end
