@@ -1,0 +1,42 @@
+License request failed for feature
+
+Requesting PROE_Educ1 ...
+7788@creo.cc.columbia.edu: (-10) Feature has expired.
+
+Displaying status for license file: 7788@creo.cc.columbia.edu
+License Server is UP: 7788@creo.cc.columbia.edu
+
+  Warning (-96): License server machine is down or not responding.
+ See the system adminstrator about starting the license server system, or
+ make sure you're referring to the right host (see LM_LICENSE_FILE).
+Feature:       PROE_Educ1
+Hostname:      192.168.0.13
+License path:  7788@creo.cc.columbia.edu;
+FLEXnet Licensing error:-96,491
+For further information, refer to the FLEXnet Licensing End User Guide,
+available at "www.macrovision.com".
+
+                       License    In Use   Free   Version    Expire Date        SCN 
+                       -------    ------   ----   -------    -----------       -----
+                      PVMCAD64        Expired       10.2     05-nov-2016     
+                 PVDESIGNCHECK        Expired       10.2     05-nov-2016     
+                PVINTERFERENCE        Expired       10.2     05-nov-2016     
+                   PVANIMATION        Expired       10.2     05-nov-2016     
+                      MECFATUI        Expired       34.0     05-nov-2016     
+                     MECFATENG        Expired       34.0     05-nov-2016     
+                Mecui_Advanced        Expired       34.0     05-nov-2016     
+               Meceng_Advanced        Expired       34.0     05-nov-2016     
+                 MEC-Cus-Loads        Expired       34.0     05-nov-2016     
+                 CREODMA_EDUC1        Expired       34.0     05-nov-2016    5R1985350
+                     PVMCADPRO        Expired       10.2     05-nov-2016    5R1985350
+                         PVPRO        Expired       10.2     05-nov-2016    5R1985350
+                    PROE_Educ1        Expired       34.0     05-nov-2016    5R1985350
+          ILINK_CLIENT_License        Expired        3.4     05-nov-2016    5R1985350
+            CREOILLUS_STANDARD        Expired        3.0     05-nov-2016    5R1985350
+                  CREOLAY_Educ        Expired       34.0     05-nov-2016    5R1985350
+           MECBASICENG_License        Expired       34.0     05-nov-2016    5R1985350
+            MECBASICUI_License        Expired       34.0     05-nov-2016    5R1985350
+             CREOSCHEM_License        Expired       34.0     05-nov-2016    5R1985350
+               VERICUT_License        Expired       34.0     05-nov-2016    5R1985350
+
+
