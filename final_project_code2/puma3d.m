@@ -710,7 +710,7 @@ t6_edit = uicontrol(K_p,'style','edit',...
             set(L1,'vertices',Link1(:,1:3),'facec', [0.717,0.116,0.123]);
             set(L1, 'FaceColor','y');
             set(L2,'vertices',Link2(:,1:3),'facec', [0.216,1,.583]);
-            set(L2, 'FaceColor','m');
+            set(L2, 'FaceColor','b');
             set(L3,'vertices',Link3(:,1:3),'facec', [0.306,0.733,1]);
             set(L3, 'FaceColor','c');
             set(L4,'vertices',Link4(:,1:3),'facec', [1,0.542,0.493]);
@@ -720,7 +720,8 @@ t6_edit = uicontrol(K_p,'style','edit',...
             set(L6,'vertices',Link6(:,1:3),'facec', [1,1,0.255]);
             set(L6, 'FaceColor','g');
             set(L7,'vertices',Link7(:,1:3),'facec', [0.306,0.733,1]);
-            set(L7, 'FaceColor','b');
+            %set(L7, 'FaceColor',[0.43 0.62 0.93]);
+            set(L7, 'FaceColor',[0.2 0.6 1]);
             % store trail in appdata 
             if trail == 'y'
                 x_trail = getappdata(0,'xtrail');
