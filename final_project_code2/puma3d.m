@@ -316,8 +316,8 @@ t6_edit = uicontrol(K_p,'style','edit',...
         %trajectory is a circle
         n = 2;    % demo ani steps
         r = 350; Ox = 0; Oy = 600; Oz = 650;
-        for theta = 0.1:0.1:pi/2
-            for phi = 0.1:0.1:2*pi
+        for theta = 0.1:0.2:pi/2
+            for phi = 0.1:0.5:2*pi
                 Px = Ox + r*sin(theta)*cos(phi);
                 Pz = Oz + r*sin(theta)*sin(phi);
                 Py = Oy - r*cos(theta);
@@ -859,7 +859,8 @@ t6_edit = uicontrol(K_p,'style','edit',...
         set(L6, 'EdgeColor','none');
         set(L7, 'facec', [0.306,0.733,1]);
         set(L7, 'EdgeColor','none');
-        set(A1, 'facec', [.8,.8,.8],'FaceAlpha',.25);
+        set(A1, 'facec', [.8,.8,.8]);%,'FaceAlpha',.25);
+        set(A1, 'FaceColor',[0.306,0.733,1]);
         set(A1, 'EdgeColor','none');
         %
         setappdata(0,'ThetaOld',[90,-90,-90,0,0,0]);
