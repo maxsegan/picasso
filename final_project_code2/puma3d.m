@@ -27,7 +27,7 @@ InitHome
 rotate3d on
 
 
-
+theta6_plus = 0;
 %
 % Create the push buttons: pos is: [left bottom width height]
 demo = uicontrol(fig_1,'String','Demo','callback',@demo_button_press,...
@@ -313,30 +313,34 @@ t6_edit = uicontrol(K_p,'style','edit',...
 % % % %
 %% Demo button's callback
     function demo_button_press(h,dummy)
-        %
-        % disp('pushed demo bottom');
-        %         R = 500;
-        %         x = 1000;
+        %trajectory is a circle
         n = 2;    % demo ani steps
-        num = 30; % home to start, and end to home ani steps
-        %         j = 1;
-        %         M = 1000;
-        for t = 0:.1:7*pi
-            Px = 30*t*cos(t);
-            Py = 1200-300*t*(t)/(50*pi);
-            Pz = 30*t*sin(t);
-            [theta1,theta2,theta3,theta4,theta5,theta6] = PumaIK(Px,Py,Pz);
-            if t==0 %move to start of demo
-                pumaANI(theta1,theta2,theta3-180,0,0,0,num,'n')
+        r = 350; Ox = 0; Oy = 600; Oz = 650;
+        for theta = 0.1:0.1:pi/2
+            for phi = 0.1:0.1:2*pi
+                Px = Ox + r*sin(theta)*cos(phi);
+                Pz = Oz + r*sin(theta)*sin(phi);
+                Py = Oy - r*cos(theta);
+                %Py = 1200-300*t*(t)/(50*pi);
+                %Py = 600 + theta*600/pi;
+                [theta1,theta2,theta3,theta4,theta5,theta6] = PumaIK(Px,Py,Pz,theta,phi,r,Ox,Oy,Oz);
+                
+                theta6_plus = theta6_plus + 250;
+                if theta6_plus >= 260
+                    theta6_plus = theta6_plus-360;
+                end
+                theta6 = theta6_plus
+                %theta6=rand(1)*200;
+                %theta4 =0 ;theta5 =0 ;theta6 =0 ;
+                pumaANI(theta1,theta2,theta3-180,theta4,theta5,theta6,n,'y')
+                
+                set(t1_edit,'string',round(theta1)); % Update slider and text.
+                set(t1_slider,'Value',round(theta1));
+                set(t2_edit,'string',round(theta2));
+                set(t2_slider,'Value',round(theta2));
+                set(t3_edit,'string',round(theta3-180));
+                set(t3_slider,'Value',round(theta3-180));
             end
-            % Theta 4, 5 & 6 are zero due to plotting at wrist origen.
-            pumaANI(theta1,theta2,theta3-180,0,0,0,n,'y')
-            set(t1_edit,'string',round(theta1)); % Update slider and text.
-            set(t1_slider,'Value',round(theta1));
-            set(t2_edit,'string',round(theta2));
-            set(t2_slider,'Value',round(theta2));
-            set(t3_edit,'string',round(theta3-180));
-            set(t3_slider,'Value',round(theta3-180));
         end
         gohome
 %        pumaANI(90,-90,-90,0,0,0,num,'n')
@@ -647,6 +651,8 @@ t6_edit = uicontrol(K_p,'style','edit',...
         t3 = linspace(theta3old,theta3,n);% -180;  
         t4 = linspace(theta4old,theta4,n); 
         t5 = linspace(theta5old,theta5,n); 
+%         theta1;
+%         theta6;
         t6 = linspace(theta6old,theta6,n); 
 
         n = length(t1);
@@ -660,11 +666,11 @@ t6_edit = uicontrol(K_p,'style','edit',...
             T_45 = tmat(90, 0, 0, t5(i));
             T_56 = tmat(-90, 0, 0, t6(i));
 
-% 
-%             %     T_67 = [   1            0      0 0
-%             %                0            1      0 0
-%             %                0            0      1 188
-%             %                0            0      0 1];
+
+                T_67 = [   1            0      0 0
+                           0            1      0 0
+                           0            0      1 188
+                           0            0      0 1];
 
             %T_01 = T_01;  % it is, but don't need to say so.
             T_02 = T_01*T_12;
@@ -672,7 +678,7 @@ t6_edit = uicontrol(K_p,'style','edit',...
             T_04 = T_03*T_34;
             T_05 = T_04*T_45;
             T_06 = T_05*T_56;
-            %     T_07 = T_06*T_67;
+            T_07 = T_06*T_67;
             %
             s1 = getappdata(0,'Link1_data');
             s2 = getappdata(0,'Link2_data');
@@ -727,10 +733,13 @@ t6_edit = uicontrol(K_p,'style','edit',...
                 x_trail = getappdata(0,'xtrail');
                 y_trail = getappdata(0,'ytrail');
                 z_trail = getappdata(0,'ztrail');
-                %
-                xdata = [x_trail T_04(1,4)];
-                ydata = [y_trail T_04(2,4)];
-                zdata = [z_trail T_04(3,4)];
+%                 %
+%                 xdata = [x_trail T_04(1,4)];
+%                 ydata = [y_trail T_04(2,4)];
+%                 zdata = [z_trail T_04(3,4)];
+                xdata = [x_trail T_07(1,4)];
+                ydata = [y_trail T_07(2,4)];
+                zdata = [z_trail T_07(3,4)];
                 %
                 setappdata(0,'xtrail',xdata); % used for trail tracking.
                 setappdata(0,'ytrail',ydata); % used for trail tracking.
@@ -761,7 +770,7 @@ t6_edit = uicontrol(K_p,'style','edit',...
         daspect([1 1 1])                    % Setting the aspect ratio
         view(135,25)
         xlabel('X'),ylabel('Y'),zlabel('Z');
-        title('WWU Robotics Lab PUMA 762');
+        title('Fruit Ninja');
         axis([-2000 2000 -2000 2000 -1120 2000]);
         plot3([-2000,2000],[-2000,-2000],[-1120,-1120],'k')
         plot3([-2000,-2000],[-2000,2000],[-1120,-1120],'k')

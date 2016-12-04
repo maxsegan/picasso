@@ -1,4 +1,4 @@
-function [theta1,theta2,theta3,theta4,theta5,theta6] = PumaIK(Px,Py,Pz)
+function [theta1,theta2,theta3,theta4,theta5,theta6] = PumaIK(Px,Py,Pz, theta,phi1,r,Ox,Oy,Oz)
     theta4 = 0;
     theta5 = 0;
     theta6 = 0;
@@ -48,26 +48,28 @@ function [theta1,theta2,theta3,theta4,theta5,theta6] = PumaIK(Px,Py,Pz)
             t23 = atan2((-a3-a2*c3)*Pz-(c1*Px+s1*Py)*(d4-a2*s3),(a2*s3-d4)*Pz+(a3+a2*c3)*(c1*Px+s1*Py));
             theta2 = (t23 - theta3);
 
-            c2 = cos(theta2);
-            s2 = sin(theta2);
-            s23 = ((-a3-a2*c3)*Pz+(c1*Px+s1*Py)*(a2*s3-d4))/(Pz^2+(c1*Px+s1*Py)^2);
-            c23 = ((a2*s3-d4)*Pz+(a3+a2*c3)*(c1*Px+s1*Py))/(Pz^2+(c1*Px+s1*Py)^2);
-            r13 = -c1*(c23*c4*s5+s23*c5)-s1*s4*s5;
-            r23 = -s1*(c23*c4*s5+s23*c5)+c1*s4*s5;
-            r33 = s23*c4*s5 - c23*c5;
-            theta4 = atan2(-r13*s1+r23*c1,-r13*c1*c23-r23*s1*c23+r33*s23);
-
-            r11 = c1*(c23*(c4*c5*c6-s4*s6)-s23*s5*c6)+s1*(s4*c5*c6+c4*s6);
-            r21 = s1*(c23*(c4*c5*c6-s4*s6)-s23*s5*c6)-c1*(s4*c5*c6+c4*s6);
-            r31 = -s23*(c4*c5*c6-s4*s6)-c23*s5*c6;
-            s5 = -(r13*(c1*c23*c4+s1*s4)+r23*(s1*c23*c4-c1*s4)-r33*(s23*c4));
-            c5 = r13*(-c1*s23)+r23*(-s1*s23)+r33*(-c23);
-            theta5 = atan2(s5,c5);
-
-            s6 = -r11*(c1*c23*s4-s1*c4)-r21*(s1*c23*s4+c1*c4)+r31*(s23*s4);
-            c6 = r11*((c1*c23*c4+s1*s4)*c5-c1*s23*s5)+r21*((s1*c23*c4-c1*s4)*c5-s1*s23*s5)-r31*(s23*c4*c5+c23*s5);
-            theta6 = atan2(s6,c6);
-
+            %%%%%%%%%%%%%%%%%%%%%% compute R_3_6 %%%%%%%%%%%%%%%%%%%%%%%%
+                R_0_6 = RotationMatrix(theta,phi1,r,Ox,Oy,Oz);
+                %R_0_3
+                t1 = theta1/pi*180;
+                t2 = theta2/pi*180;
+                t3 = theta3/pi*180;
+                T_01 = tmat(0, 0, 0, t1);
+                T_12 = tmat(-90, 0, 0, t2);
+                T_23 = tmat(0, a2, d3, t3);
+                T_02 = T_01*T_12;
+                T_03 = T_02*T_23;                
+                R_0_3 = T_03(1:3,1:3);
+                %R_3_6
+                R_3_6 = (R_0_3)'*R_0_6;
+                r11 = R_3_6(1,1);r12 = R_3_6(1,2);r13 = R_3_6(1,3);
+                r21 = R_3_6(2,1);r22 = R_3_6(2,2);r23 = R_3_6(2,3);
+                r31 = R_3_6(3,1);r32 = R_3_6(3,2);r33 = R_3_6(3,3);
+            %%%%%%%%%%  method from document
+                theta5 = -atan2(-sqrt(r21^2+r22^2), r23);
+                theta4 = atan2(r33/sin(theta5),-r13/sin(theta5));
+                theta6 = atan2(-r22/sin(theta5),r21/sin(theta5));
+                
             theta1 = theta1*180/pi;
             theta2 = theta2*180/pi;
             theta3 = theta3*180/pi;
@@ -78,7 +80,8 @@ function [theta1,theta2,theta3,theta4,theta5,theta6] = PumaIK(Px,Py,Pz)
                 theta2 = -theta2;
             end
 
-            if theta1<=160 && theta1>=-160 && (theta2<=20 && theta2>=-200) && theta3<=45 && theta3>=-225 && theta4<=266 && theta4>=-266 && theta5<=100 && theta5>=-100 && theta6<=266 && theta6>=-266
+            %if theta1<=160 && theta1>=-160 && (theta2<=20 && theta2>=-200) && theta3<=45 && theta3>=-225 && theta4<=266 && theta4>=-266 && theta5<=100 && theta5>=-100 && theta6<=266 && theta6>=-266
+            if theta1<=160 && theta1>=-160 && (theta2<=20 && theta2>=-200) && theta3<=45 && theta3>=-225 
                 nogo = 1;
                 theta3 = theta3+180;
                 break
