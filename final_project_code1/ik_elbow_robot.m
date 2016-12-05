@@ -8,6 +8,7 @@ function theta = ik_elbow_robot(tr, R, a, d)
 %   d - 6x1 vector, column for d from DH table
 % Output:
 %   theta - 6x1 vector, column for theta from DH table
+global end_effector
 px = tr(1) - d(6)*R(1,3);
 py = tr(2) - d(6)*R(2,3);
 pz = tr(3) - d(6)*R(3,3);
@@ -16,9 +17,21 @@ x1 = px;
 y1 = py;
 theta(1,:) = atan2(y1,x1);  %theta 1
 D = (px^2+py^2+(pz-d(1))^2-a(2)^2-d(4)^2) / (2*a(2)*d(4));
+if end_effector == 0
 x3 = D;
 y3 = -sqrt(1-D^2);
 theta(3,:) = atan2(y3,x3);  %theta 3
+end
+if end_effector == 1
+x3 = D;
+y3 = -sqrt(1-D^2);
+theta(3,:) = atan2(y3,x3);  %theta 3
+end
+if end_effector == 2
+x3 = D;
+y3 = sqrt(1-D^2);
+theta(3,:) = atan2(y3,x3);  %theta 3
+end
 x2 = sqrt(px^2+py^2);
 y2 = pz - d(1);
 x22 = a(2)+d(4)*cos(theta(3));
